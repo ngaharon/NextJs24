@@ -1,0 +1,3 @@
+[submodule "NextJs24"]
+	path = NextJs24
+	url = git@github.com:ngaharon/NextJs24.git
