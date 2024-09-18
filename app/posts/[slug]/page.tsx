@@ -1,3 +1,4 @@
+import MDXContent from '@/components/mdx-content'
 import { getPostBySlug } from '@/lib/posts'
 import { formatDate } from '@/lib/utils'
 import { ArrowLeftIcon } from '@radix-ui/react-icons'
@@ -9,13 +10,6 @@ import { notFound } from 'next/navigation'
 import { title } from 'process'
 import React, { Component } from 'react'
 
-const components = {
-  h2: (props: any) => (
-    <h2 {...props} className='text-red-400'>
-      {props.children}
-    </h2>
-  )
-}
 
 
 export default async function Post({params}: {params: {slug: string}}) {
@@ -60,7 +54,7 @@ export default async function Post({params}: {params: {slug: string}}) {
       </header>
 
       <main className='prose mt-16 dark:prose-invert'>
-        <MDXRemote source={content} components={components}/>
+        <MDXContent source={content}/>
       </main>
     </div>
   </section>
