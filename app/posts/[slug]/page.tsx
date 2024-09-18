@@ -3,10 +3,20 @@ import { formatDate } from '@/lib/utils'
 import { ArrowLeftIcon } from '@radix-ui/react-icons'
 import { MDXRemote } from 'next-mdx-remote/rsc'
 import image from 'next/image'
+import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { title } from 'process'
-import React from 'react'
+import React, { Component } from 'react'
+
+const components = {
+  h2: (props: any) => (
+    <h2 {...props} className='text-red-400'>
+      {props.children}
+    </h2>
+  )
+}
+
 
 export default async function Post({params}: {params: {slug: string}}) {
 
@@ -16,6 +26,10 @@ export default async function Post({params}: {params: {slug: string}}) {
     if (!post) {
         notFound()
     }
+
+    const { metadata, content } = post
+    const { title, image, author, publishedAt } = metadata
+    
   return (
     <section className='pb-24 pt-32'>
     <div className='container max-w-3xl'>
@@ -40,13 +54,13 @@ export default async function Post({params}: {params: {slug: string}}) {
 
       <header>
         <h1 className='title'>{title}</h1>
-        <p className='mt-3 text-xs text-muted-foreground'>\
-            {author} / {formatDate(pubishedAt ?? '')}
+        <p className='mt-3 text-xs text-muted-foreground'>
+         {author} / {formatDate(publishedAt ?? '')}
         </p>
       </header>
 
       <main className='prose mt-16 dark:prose-invert'>
-        <MDXRemote source={content} />
+        <MDXRemote source={content} components={components}/>
       </main>
     </div>
   </section>
