@@ -1,7 +1,17 @@
+import Posts from '@/components/posts'
+import { getPosts } from '@/lib/posts'
 import React from 'react'
 
-export default function PostsPage() {
+export default async function PostsPage() {
+
+  const posts = await getPosts()
   return (
-    <div>PostsPage</div>
+    <section className='pb-24 pt-40'>
+    <div className='container max-w-3xl'>
+      <h1 className='title mb-12'>Posts</h1>
+
+      <Posts posts={posts} />
+    </div>
+  </section>
   )
 }
