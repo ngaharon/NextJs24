@@ -1,4 +1,5 @@
 import MDXContent from '@/components/mdx-content'
+import NewsletterForm from '@/components/newsletter-form'
 import { getPostBySlug, getPosts } from '@/lib/posts'
 import { formatDate } from '@/lib/utils'
 import { ArrowLeftIcon } from '@radix-ui/react-icons'
@@ -60,6 +61,10 @@ export default async function Post({params}: {params: {slug: string}}) {
       <main className='prose mt-16 dark:prose-invert'>
         <MDXContent source={content}/>
       </main>
+      
+      <footer className='mt-16'>
+          <NewsletterForm />
+        </footer>
     </div>
   </section>
   )
