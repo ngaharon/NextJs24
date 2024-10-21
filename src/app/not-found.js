@@ -1,9 +1,12 @@
 
 
 export default function NotFound() {
-    return <div>
+    return ( 
+      <div>
         <h1>
-            This page does not exist
+            Oops! page not exist
         </h1>
-    </div>
+        <Link href={"/"}>Go back home</Link>
+      </div>
+    );
 }
