@@ -1,11 +1,15 @@
-import 'bootstrap-icons/font/boostrap-icons.css';
-import 'bootstrap/dist/css/boostrap.css';
-import 'aos/dist/aos/css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'aos/dist/aos.css';
+
+
 import type { Metadata } from "next";
 import { EB_Garamond } from "next/font/google";
+
+import Header from '@/components/Header';
+
 import "./globals.css";
 import "./variables.css";
-
 const ebGaramond = EB_Garamond({
   subsets: ["latin"]
 });
@@ -23,6 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${ebGaramond.className}`}>
+        <Header />
         {children}
       </body>
     </html>
