@@ -3,10 +3,14 @@
 import React, { useState, useEffect, ReactNode, Key } from 'react'
 import { useRouter } from 'next/navigation';
 import './posts.css'
+import PostItemOne from '@/components/PostItemOne';
+import { get } from 'http';
+import TrendingPost from '@/components/TrendingPost';
 
 export default function Posts() {
   const router = useRouter();
   const [items, setItems] = useState<any | []>([]);
+  const [item, setItem] = useState({})
 
   const getItemsData = () => {
     fetch(`/api/postitems`)
@@ -15,21 +19,104 @@ export default function Posts() {
     .catch(err => console.log(err.message))
   };
 
+  const getSinglePostData=(id: string)=>{
+    fetch(`/api/postitems/${id}`)
+    .then(res => {
+      if(res.status === 404){
+        router.push('/not-found');
+      }
+      return res.json();
+    })
+    .then(data => setItems(data))
+    .catch(err => console.log(err.message))
+  };
+
   useEffect(() => {
     getItemsData();
+    getSinglePostData('5a97f9c91c807bb9c6eb5fb4');
   }, []);
 
   return (
     <section id="posts" className='posts'>
-      <div className="container" data-aos='fade-up'>
-        {items && items.length > 0 && items.map((item: {
-          title: ReactNode;
-          _id: Key | null | undefined; item: { id: string; title: string } 
-}) => (
-          <p key={item._id}>{item.title}</p>
-        ))}
+    <div className="container" data-aos='fade-up'>
+      <div className="row g-5">
+        <div className="col-lg-4">
+          <PostItemOne large={true} item={item} />
+        </div>
+        <div className="col-lg-8">
+          <div className="row g-5">
+          <div className="col-lg-4 border-start custom-border">
+              {items && 
+              items.length > 0 && 
+                items
+              .filter((item: {
+              trending: boolean;
+              top: boolean;
+              }) => item.trending && !item.top
+              ).slice(0, 3)
+              .map((item: {
+              _id: string; 
+              img: string;
+              category: string;
+              title: string;
+              date: string;
+              brief: string;
+              avator: string;
+              author: string;
+              }) => (
+              <PostItemOne key={item._id} large={false} item={{ ...item, _id: item._id as string }}/>
+              ))}
+          </div>
+          <div className="col-lg-4 border-start custom-border">
+          {items && 
+            items.length > 0 && 
+            items
+            .filter((item: {
+              trending: boolean;
+              top: boolean;
+              }) => item.trending && !item.top
+            ).slice(3, 6)
+            .map((item: {
+              _id: string; 
+              img: string;
+              category: string;
+              title: string;
+              date: string;
+              brief: string;
+              avator: string;
+              author: string;
+            }) => (
+            <PostItemOne key={item._id} large={false} item={{ ...item, _id: item._id as string }}/>
+            ))}
+          </div>
+          <div className="col-lg-4">
+            <div className="trending">
+              <h3>Trending</h3>
+              <ul className="trending-post">
+                {
+                  items && items.length>0 
+                  && items.filter((item: {trending: boolean;}) => item.trending)
+                  .map((item : 
+                    {
+                      _id: string;
+                      img: string;
+                      category: string;
+                      title: string;
+                      date: string;
+                      brief: string;
+                      avator: string;
+                      author: string;
+                  }, index: number) => (
+                    <TrendingPost key={item._id} index={index} item={item} />
+                  ))
+                }
+              </ul>
+            </div>
+          </div>
+          </div>
+        </div>
       </div>
-
-    </section>
+    </div> 
+  </section>
   )
 }
